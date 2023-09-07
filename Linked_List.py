@@ -63,29 +63,38 @@ class LinkedList:
 
     def delete_at_mid(self, position):
         if self.is_empty():
-            return "The list is empty"
-        if position == 0:
-            return self.delete_at_start()
-        if position == self.size() - 1:
-            return self.delete_at_end()
-        if position < 0 or position > self.size():
-            print("Index out of range")
-            return
-        temp = self.head
+            return "There's Nothing to delete"
         count = 0
+        temp = self.head
         while count < position - 1:
             temp = temp.next
             count += 1
-        temp.next = temp.next.next
-        return "Delete at mid successfully"
-    
+        ptr = temp.next
+        ptr2 = ptr.next
+        temp.next = ptr2
+
     def delete_at_end(self):
+        # Check if the list is empty
         if self.size() == 0:
-            return "There's nothing to delete"
+            print("The list is empty. Nothing to delete.")
+            return
+
+        # If there's only one element in the list, delete it directly
+        if self.size() == 1:
+            self.head = None
+            self.tail = None
+            print("Deleted the only element in the list.")
+            return
+
+        # Traverse the list to find the second-to-last node
         temp = self.head
-        while temp.next.next != None:
+        while temp.next.next is not None:
             temp = temp.next
-        temp.next = None
+
+        # Update the tail node to be the second-to-last node, and set its next pointer to None
+        self.tail = temp
+        self.tail.next = None
+        print("Last element deleted successfully!")
 
     def delete_number(self, value):
         if self.is_empty():
@@ -106,15 +115,15 @@ class LinkedList:
     def display(self):
         if self.is_empty():
             return "The list is empty"
-        node = self.head
-        while node is not None:
-            print(node.data, end=" ")
-            if node == self.head:
-                print(f"Head -> {node.data} -> ", end="")
-            node = node.next
-            if node.next == None:
-                print(f"{node.data} -> Tail")
-                return
+        temp = self.head
+        while temp is not None:
+            if temp is self.head:
+                print(f"[HEAD] --> [{temp.data}]", end=' ==> ')
+            elif temp.next is None:
+                print(f"[{temp.data}] --> [TAIL]", end = '')
+            else:
+                print(f"[{temp.data}]",end=' ==> ')
+            temp = temp.next
     def search(self, value):
         if self.is_empty():
             return "The list is empty"
@@ -170,7 +179,7 @@ def main():
     match choice:
         case 0:
             while 1:
-                yesorno = input("Are you sure you want to exit? y/n: ").upper()
+                yesorno = input("Are you sure you want to exit? y/n").upper()
                 if yesorno == "Y":
                     print("THANK YOU FOR USING THIS PROGRAM")
                     os.system(exit())
@@ -190,7 +199,6 @@ def main():
             print("Delete at start successfully")
         case 5:
             ll.delete_at_end()
-            print("Delete at end successfully")
         case 6:
             if ll.size() == 0:
                 print("The linked list is empty")
