@@ -1,115 +1,129 @@
 
-import os
+import os # I'M IMPORTING OS LIBRARY TO USE THE EXIT FUNCTION
 
-from colorama import Fore,Style
-class Node:
+from colorama import Fore,Style # I'M IMPORTING COLORAMA LIBRARY TO USE THE COLOR IN THE TERMINAL
+
+class Node:# Creating a Node class that keep track of the data and its's next node
     def __init__(self, data):
         self.data = data
         self.next = None
 
 
-class LinkedList:
+class LinkedList: # Creating a Linked List class that keep track of the head node
 
-    def __init__(self):
+    def __init__(self): # Initializing the head node
         self.head = None
-    def is_empty(self):
+    def is_empty(self): # Checking if the list is empty
         return self.head == None
-    def size(self):
-        if self.is_empty():
-            return 0
-        temp = self.head
+    def size(self): # Getting the size of the list
+        temp = self.head  # Initialize temp  
         total = 0
-        while temp != None:
+        while temp != None: # Counting the number of nodes in the list
             temp = temp.next
             total += 1
-        return total
-    def insert_at_start(self, data):
+        return total # Return the total number of nodes in the list
+    def insert_at_start(self, data): # Inserting a node at the start of the list
         new_node = Node(data)
-        new_node.next = self.head
+        new_node.next = self.head # Just assigning the head node to the new node's next node
         self.head = new_node
         print("\n\nInsert at start Successfully")
 
-    def insert_at_end(self, data):
+    def insert_at_end(self, data): # Inserting a node at the end of the list
         new_node = Node(data)
-        if self.is_empty():
-            self.head = new_node
+        if self.size() == 0: # Checking if the list is empty
+            self.head = new_node # If the list is empty, just assign the new node to the head node
             return print("\n\nData inserted at head instead")
         temp = self.head
-        while temp.next is not None:
+        while temp.next is not None: # Traversing the list to find the last node then assign the new node to the last node's next node
             temp = temp.next
         temp.next = new_node
         print("\n\nData inserted successfully at the tail")
 
-    def insert_at_mid(self, data, position):
-        if position == 0:
+    def insert_at_mid(self, data, position): # Inserting a node at the middle of the list with the given index/position
+        if position == 0: # If the given index/position is 0, just assign the new node to the head node
             return self.insert_at_start(data)
 
-        new_node = Node(data)
+        new_node = Node(data) # Creating a new node
         ptr = None
         temp = self.head
         count = 0
-        if position < 0:
-            if position < (self.size() - (self.size()*2)):
+        if position < 0: # If the given index/position is negative we enter this condition
+            if position < (self.size() - (self.size()*2)): # If the given index/position is less than the negative size of the list, it is out of range
                 print("\n\nIndex out of range")
                 return
-            if position == (self.size() - (self.size()*2)):
+            if position == (self.size() - (self.size()*2)): # If the given index/position is equal to 
+                                                            # the negative size of the list, just assign the new node to the head node
                 return self.insert_at_start(data)
-            position += self.size() + 1
-
-            while count < position:
+            position += self.size() + 1 # If the given index/position is greater than the negative size of the list, convert it to positive
+            while count < position: # then traverse the list to find the node with the given index/position
                 ptr = temp
                 temp = temp.next
                 count += 1
             new_node.next = temp
             ptr.next = new_node
-            position -= self.size()
-            print(f"\n\nSuccessfully Inserted at Index {position}.")
+            position -= self.size() # after assigning the new node to the node with the given index/position, convert the index/position back to negative
+            print(f"\n\nSuccessfully Inserted at Index {position}.") # prompt the user that the new node is successfully inserted at the given index/position
             return
-        if position > self.size():
+        if position > self.size(): # If the given index/position is greater than the size of the list, it is out of range
             print("\n\nIndex out of range")
             return
 
-        while count < position:
+        while count < position: # If the given index/position is within the range, traverse the list to find the node with the given index/position
             ptr = temp
             temp = temp.next
-            count += 1
+            count += 1 # after this loop ptr will be the node with the given index/position and temp will be the next node of ptr
         new_node.next = temp
         ptr.next = new_node
         print(f"\n\nSuccessfully Inserted at Index {position}.")
-    def delete_at_start(self):
+    def delete_at_start(self): # Deleting a node at the start of the list, just assign the head node to the next node of the head node
         self.head = self.head.next
         return print("\n\nDelete at start successfully")
 
-    def delete_at_mid(self, position):
-        if position < 0 or position > self.size():
+    def delete_at_mid(self, position): # Deleting a node at the middle of the list with the given index/position
+        if position == 0: # If the given index/position is 0, just assign the head node to the next node of the head node
+            return self.delete_at_start()
+        temp = self.head
+        count = 0
+        ptr = None
+        if position < 0: # If the given index/position is negative we enter this condition
+            if position < (self.size() - (self.size()*2)): # If the given index/position is less than the negative size of the list, it is out of range
+                print("\n\nIndex out of range")
+                return
+            if position == (self.size() - (self.size()*2)): # If the given index/position is equal to 
+                                                            # the negative size of the list, just assign the head node to the next node of the head node
+                return self.delete_at_start()
+            position += self.size() # If the given index/position is greater than the negative size of the list, convert it to positive
+            while count < position:
+                ptr = temp
+                temp = temp.next
+                count += 1
+            ptr.next = temp.next
+            position -= self.size() + 1# after assigning the next node of the node with the given index/position to the node with the given index/position, convert the index/position back to negative
+            print(f"\n\nSuccessfully Deleted at Index {position}.") # prompt the user that the node with the given index/position is successfully deleted
+            return
+        if position > self.size(): # If the given index/position is greater than the size of the list, it is out of range
             print("\n\nIndex out of range")
             return
-        count = 0
-        temp = self.head
-        while count < position - 1:
+        while count < position - 1: # Traversing the list to find the node with the given index/position
             temp = temp.next
             count += 1
-        ptr = temp.next
-        ptr2 = ptr.next
-        temp.next = ptr2
+        ptr = temp.next # ptr will be the node with the given index/position
+        ptr2 = ptr.next # ptr2 will be the next node of ptr
+        temp.next = ptr2 # temp will be the node before the node with the given index/position
         print(f"\n\nNumber Successfully deleted at position {position}")
-
-    def delete_at_end(self):
-        # Check if the list is empty
-        if self.size() == 0:
+    def delete_at_end(self): # Deleting a node at the end of the list
+        
+        if self.size() == 0: # If the list is empty, prompt the user that there's nothing to delete
             print("\n\nThe list is empty. Nothing to delete.")
             return
 
-        # If there's only one element in the list, delete it directly
-        if self.size() == 1:
+        if self.size() == 1: # If the list has only one element, just assign the head and tail node to None
             self.head = None
             self.tail = None
             print("Deleted the only element in the list.")
             return
-
-        # Traverse the list to find the second-to-last node
         temp = self.head
-        while temp.next.next is not None:
+        while temp.next.next is not None: # Traversing the list to find the second-to-last node
             temp = temp.next
 
         # Update the tail node to be the second-to-last node, and set its next pointer to None
@@ -117,74 +131,77 @@ class LinkedList:
         self.tail.next = None
         print("\n\nLast element deleted successfully!")
 
-    def delete_number(self, value):
-        if self.head.data == value:
+    def delete_number(self, value): # Deleting a node with the given value
+        if self.head.data == value: # If the head node is the node with the given value, just assign the head node to the next node of the head node
             self.head = self.head.next
             return print(f"\n\nDeleted {value} from the list")
         current = self.head
-        while current.next is not None and current.next.data != value:
+        while current.next is not None and current.next.data != value: # Traversing the list to find the node with the given value
             current = current.next
-        if current.next is None:
+        if current.next is None: # If the node with the given value is not found, prompt the user that the given value is not found in the list
             return f"{value} not found in the list"
-        current.next = current.next.next
+        current.next = current.next.next # Assign the next node of the node with the given value to the next node of the node with the given value
         return print(f"\n\nDeleted {value} from the list")
 
-    def display(self):
-        if self.size() == 0:
-            return print("\n\nThe list is empty! There's is nothing to display.")
-        temp = self.head
-        while temp is not None:
-            if temp is self.head:
-                print(f"\n\n[HEAD -> {temp.data}]", end=' ==> ')
-            elif temp.next is None:
-                print(f"[{temp.data} -> TAIL]", end = '')
-            else:
-                print(f"[{temp.data}]",end=' ==> ')
-            temp = temp.next
-    def search(self, value):
+
+    def search(self, value): # Searching a node with the given value
         if self.is_empty():
             return "The list is empty"
         temp = self.head
         count = 0
-        while temp.data != value:
+        while temp.data != value:   # Traversing the list to find the node with the given value
             temp = temp.next
             count += 1
-            if temp == None:
+            if temp == None:    # If the node with the given value is not found, prompt the user that the given value is not found in the list
                 return f"\n\nThere's no {value} in the list"
-        return f"\n\nFound value {value} at index {count}"
+        return f"\n\nFound value {value} at index {count}" # If the node with the given value is found, prompt the user that the given value is found at the given index/position
 
-    def display_num_position(self, index):
+    def display_num_position(self, index):  # Displaying the node with the given index/position
         if self.is_empty():
             return "\n\nThe list is empty!!"
         temp = self.head
         count = 0
-        while temp is not None:
+        while temp is not None: # Traversing the list to find the node with the given index/position
             if count == index:
                 return f"\n\nValue: {temp.data}"
             temp = temp.next
             count += 1
-        return "\n\nIndex out of range"
+        return "\n\nIndex out of range" # If the node with the given index/position is not found, prompt the user that the given index/position is out of range
+    
+    def display(self): # Displaying the Linked list
+        if self.size() == 0:
+            return print("\n\nThe list is empty! There's is nothing to display.")
+        temp = self.head
+        while temp is not None: # Traversing the list to display the nodes
+            if temp is self.head:
+                print(f"\n\n[HEAD -> {temp.data}]", end=' ==> ') # If the node is the head node, print HEAD -> node's data
+            elif temp.next is None:
+                print(f"[{temp.data} -> TAIL]", end = '') # If the node is the tail node, print node's data -> TAIL
+            else:
+                print(f"[{temp.data}]",end=' ==> ') # oterwise, just print the node's data with an arrow pointing to the next node
+            temp = temp.next    
 
+ll = LinkedList() # Creating a Linked List object
 
-ll = LinkedList()
-def if_empty():
+def if_empty(): # Checking if the list is empty or not
     if ll.size() == 0:
         print("\n\nThe linked list is empty!!")
         main()
-    else:
-        pass
+    else: # If the list is not empty, just pass
+        pass # pass is just a placeholder for an empty block of code. It does nothing. so the funtion will not return anything
 
-def input_num():
+def input_num(): # Accepting integer input only with this function
     while 1:
         try:
             return int(input("\nEnter a Number: "))
 
-        except ValueError:
+        except ValueError: # If the input is not an integer, prompt the user to input an integer then try again
             print("\n\nAccepting integer input only!!")
-def main():
-    while 1:
+def main(): # this is the main function where the program starts
+    while 1: # this is a loop that will keep asking the user to input a choice until the user input a valid choice
         try:
-            choice = int(input(""" 
+            # this is the menu of the program
+            choice = int(input("""  
             
             - - - - - MENU - - - - - 
 
@@ -204,8 +221,9 @@ def main():
             break
         except ValueError:
             print("\n\t\t\tPlease input integer only")
-    match choice:
-        case 0:
+    match choice: # this is a switch case statement that will execute the code depending on the user's choice
+        
+        case 0: # if the user input 0, the program will exit if the user input y, otherwise the program will go back to the menu
             while 1:
                 yesorno = input("\nAre you sure you want to exit? y/n: ").upper()
                 if yesorno == "Y":
@@ -213,33 +231,36 @@ def main():
                     os.system(exit())
                 elif yesorno == "N":
                     main()
-        case 1:
+        case 1: # if the user input 1, the program will ask the user to input a number then insert it at the start of the list
             ll.insert_at_start(input_num())
-        case 2:
+            
+        case 2: # if the user input 2, the program will ask the user to input a number then insert it at the end of the list
             ll.insert_at_end(input_num())
-        case 3:
+            
+        case 3: # if the user input 3, the program will ask the user to input a number and a position then insert it at the given position of the list
             ll.insert_at_mid(input_num(), int(input("\nEnter position: ")))
-        case 4:
-            if_empty()
+            
+        case 4: # if the user input 4, the program will delete the node at the start of the list
+            if_empty() # this is a function that will check if the list is empty or not
             ll.delete_at_start()
-        case 5:
+        case 5: # if the user input 5, the program will delete the node at the end of the list
             if_empty()
             ll.delete_at_end()
-        case 6:
+        case 6: # if the user input 6, the program will ask the user to input a position then delete the node at the given position of the list
             if_empty()
             ll.delete_at_mid(int(input("\nEnter position: ")))
-        case 7:
+        case 7: # if the user input 7, the program will ask the user to input a number then delete the node with the given value
             if_empty()
             ll.delete_number(input_num())
-        case 8:
+        case 8: # if the user input 8, the program will ask the user to input a number then search the node with the given value then display the index/position of the node
             if_empty()
             print(ll.search(input_num()))
-        case 9:
+        case 9: # if the user input 9, the program will ask the user to input a position then display the node with the given index/position
             if_empty()
             print(ll.display_num_position(int(input("\nEnter position: "))))
-        case 10:
+        case 10: # if the user input 10, the program will display the list
             ll.display()
         case _:
             print("\nChoice Not in the option!! try again.")
-    main()
-main()
+    main() # this is a recursive function that will keep the program running unless the user inputs 0 then confirm to exit the program
+main() # This is to call the main function to start the program
