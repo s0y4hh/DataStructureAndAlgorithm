@@ -134,7 +134,7 @@ class LinkedList:
             count += 1
             if temp == None:
                 return f"There's no {value} in the list"
-        return count
+        return f"Found {value} at index {count}"
 
     def display_num_position(self, index):
         if self.is_empty():
