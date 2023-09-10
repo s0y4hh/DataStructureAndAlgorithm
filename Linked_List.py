@@ -1,4 +1,4 @@
-
+"""JAYSON ASIADO BSCS 1A"""
 import os # I'M IMPORTING OS LIBRARY TO USE THE EXIT FUNCTION
 
 from colorama import Fore,Style # I'M IMPORTING COLORAMA LIBRARY TO USE THE COLOR IN THE TERMINAL
@@ -11,7 +11,6 @@ class Node:# Creating a Node class that keep track of the data and its's next no
     def __init__(self, data):
         self.data = data
         self.next = None
-
 
 class LinkedList: # Creating a Linked List class that keep track of the head node
 
